@@ -1,0 +1,15 @@
+[project]
+name = "rag-knowledge-system"
+version = "0.1.0"
+description = "A retrieval-augmented generation system with source-grounded retrieval and evaluation."
+requires-python = ">=3.12,<3.13"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
