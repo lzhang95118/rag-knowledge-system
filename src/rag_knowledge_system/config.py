@@ -1,0 +1,1 @@
+SUPPORTED_TEXT_TYPES = {"txt", "md"}

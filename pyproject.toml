@@ -3,7 +3,9 @@ name = "rag-knowledge-system"
 version = "0.1.0"
 description = "A retrieval-augmented generation system with source-grounded retrieval and evaluation."
 requires-python = ">=3.12,<3.13"
-dependencies = []
+dependencies = [
+    "pydantic>=2.0",
+]
 
 [project.optional-dependencies]
 dev = [
