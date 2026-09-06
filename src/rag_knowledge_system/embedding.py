@@ -1,7 +1,16 @@
-from rag_knowledge_system.config import DEFAULT_EMBEDDING_MODEL
-from sentence_transformers import SentenceTransformer
-import numpy as np
+from typing import Protocol
 
+import numpy as np
+from sentence_transformers import SentenceTransformer
+
+from rag_knowledge_system.config import DEFAULT_EMBEDDING_MODEL
+
+class Embedder(Protocol):
+    def embed_texts(
+        self,
+        texts: list[str],
+    ) -> np.ndarray:
+        ...
 
 class HuggingFaceEmbedding:
     def __init__(

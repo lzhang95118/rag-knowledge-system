@@ -73,3 +73,38 @@ def test_vector_store_rejects_mismatched_lengths():
             chunks=[chunk],
             embeddings=embeddings,
         )
+
+
+def test_vector_store_filters_by_metadata():
+    chunk_a = Chunk(
+        document_id=UUID("00000000-0000-0000-0000-000000000001"),
+        content="attendance policy",
+        chunk_index=0,
+        metadata={"category": "attendance"},
+    )
+
+    chunk_b = Chunk(
+        document_id=UUID("00000000-0000-0000-0000-000000000001"),
+        content="library opening times",
+        chunk_index=1,
+        metadata={"category": "library"},
+    )
+
+    embeddings = np.array([
+        [1.0, 0.0],
+        [0.0, 1.0],
+    ])
+
+    store = InMemoryVectorStore()
+    store.add(
+        chunks=[chunk_a, chunk_b],
+        embeddings=embeddings,
+    )
+
+    query_vector = np.array([1.0, 0.0])
+    metadata = {"category": "attendance"}
+
+    results = store.search(query_vector, top_k=2, metadata_filter=metadata)
+
+    assert len(results) == 1
+    assert results[0].chunk.content == "attendance policy"

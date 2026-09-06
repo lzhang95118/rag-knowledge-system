@@ -4,11 +4,13 @@ A retrieval-augmented generation system for ingesting, indexing, retrieving and 
 
 ## Public Repository Note
 
-This repository is a sanitised and re-engineered public implementation based on patterns developed in private local-first projects.
+This repository is a sanitised and re-engineered public implementation derived from patterns used in private local-first projects.
 
-All private, organisational, credential, and personally identifiable data has been removed. The public version uses synthetic or publicly available sample data only.
+The original implementations contain organisation-specific workflows, private operational data, credentials, local infrastructure details, and environment-specific integrations that are not suitable for public release.
 
-The public implementation focuses on architecture, testing, reproducibility, and transferable engineering patterns rather than reproducing private production data or environment-specific integrations.
+This public version therefore reconstructs the core engineering patterns using synthetic or publicly available sample data. The focus is on demonstrating transferable architecture and engineering practices, including ingestion, chunking, embedding, retrieval, filtering, reranking, testing, and reproducibility.
+
+The public repository is not intended to reproduce the private production environment or its data.
 
 ## Status
 
@@ -21,22 +23,32 @@ Current capabilities:
 - Hugging Face sentence embeddings
 - in-memory vector storage
 - cosine similarity search
+- metadata filtering
 - top-k semantic retrieval
+- hybrid semantic and keyword retrieval
+- second-stage reranking
 - end-to-end retrieval pipeline
 - automated tests
 
 ## Project Goals
 
-This project explores:
+## Implemented
 
 - document ingestion and parsing
 - metadata-aware chunking
 - embedding and vector retrieval
-- hybrid retrieval and reranking
-- source-grounded responses
+- metadata filtering
+- hybrid retrieval
+- reranking
+- automated testing
+
+## Roadmap
+
 - retrieval evaluation
+- source-grounded generation
 - structured outputs
-- API deployment and testing
+- FastAPI deployment
+- Docker packaging
 
 ## Architecture
 
@@ -46,8 +58,9 @@ flowchart LR
     B --> C[Chunk]
     C --> D[Embed]
     D --> E[Vector Store]
-    E --> F[Retrieve]
-    F --> G[Rerank]
-    G --> H[Generate]
-    H --> I[Cite Sources]
+    E --> F[Semantic Retrieve]
+    F --> G[Metadata Filter]
+    G --> H[Hybrid Score]
+    H --> I[Rerank]
+    I --> J[Top-K Results]
 ```

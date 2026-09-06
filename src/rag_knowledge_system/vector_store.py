@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from collections.abc import Mapping
+from typing import Any
 
 import numpy as np
 
@@ -32,10 +34,20 @@ class InMemoryVectorStore:
         self,
         query_vector: np.ndarray,
         top_k: int = 3,
+        metadata_filter: Mapping[str, Any] | None = None,
     ) -> list[SearchResult]:
         results = []
 
         for chunk, embedding in zip(self.chunks, self.embeddings):
+            if metadata_filter is not None:
+                matches = all(
+                    chunk.metadata.get(key) == value
+                    for key, value in metadata_filter.items()
+                )
+
+                if not matches:
+                    continue
+
             score = cosine_similarity(query_vector, embedding)
 
             results.append(
