@@ -12,7 +12,18 @@ The public implementation focuses on architecture, testing, reproducibility, and
 
 ## Status
 
-Under active development.
+Core retrieval pipeline implemented.
+
+Current capabilities:
+
+- validated text and Markdown ingestion
+- character, word, token and paragraph-aware chunking
+- Hugging Face sentence embeddings
+- in-memory vector storage
+- cosine similarity search
+- top-k semantic retrieval
+- end-to-end retrieval pipeline
+- automated tests
 
 ## Project Goals
 
@@ -29,8 +40,6 @@ This project explores:
 
 ## Architecture
 
-Planned high-level flow:
-
 ```mermaid
 flowchart LR
     A[Document] --> B[Parse]
@@ -41,3 +50,4 @@ flowchart LR
     F --> G[Rerank]
     G --> H[Generate]
     H --> I[Cite Sources]
+```

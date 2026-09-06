@@ -4,6 +4,7 @@ from typing import Any, Protocol
 from pydantic import BaseModel, Field
 from rag_knowledge_system.documents import Document
 
+
 class Chunk(BaseModel):
     chunk_id: UUID = Field(default_factory=uuid4)
     document_id: UUID
@@ -161,3 +162,56 @@ def chunk_document_by_tokens(
 
     return chunks
 
+def chunk_document_by_paragraphs(
+        document: Document,
+        max_words: int = 100,
+        overlap: int = 0,
+) -> list[Chunk]:
+
+    paragraphs = [
+        paragraph.strip()
+        for paragraph in document.content.split("\n\n")
+        if paragraph.strip()
+    ]
+
+    chunks = []
+
+    for paragraph in paragraphs:
+        if len(paragraph.split()) <= max_words:
+            chunks.append(
+                Chunk(
+                    document_id=document.document_id,
+                    content=paragraph,
+                    chunk_index=len(chunks),
+                    metadata={
+                        **document.metadata,
+                        "source": document.source,
+                        "file_type": document.file_type,
+                        "chunk_index": len(chunks),
+                        "chunk_strategy": "paragraph",
+                    }
+                )
+            )
+        else:
+            paragraph_document = Document(
+                document_id=document.document_id,
+                content=paragraph,
+                source=document.source,
+                file_type=document.file_type,
+                metadata=document.metadata,
+            )
+
+            paragraph_chunks = chunk_document_by_words(
+                paragraph_document,
+                chunk_size=max_words,
+                overlap=overlap,
+            )
+
+            for paragraph_chunk in paragraph_chunks:
+                paragraph_chunk.chunk_index = len(chunks)
+                paragraph_chunk.metadata["chunk_index"] = len(chunks)
+                paragraph_chunk.metadata["chunk_strategy"] = "paragraph_word"
+
+                chunks.append(paragraph_chunk)
+
+    return chunks
