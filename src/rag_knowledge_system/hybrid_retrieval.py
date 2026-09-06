@@ -3,7 +3,7 @@ from typing import Any
 from dataclasses import dataclass
 
 from rag_knowledge_system.chunking import Chunk
-from rag_knowledge_system.embedding import HuggingFaceEmbedding, Embedder
+from rag_knowledge_system.embedding import Embedder
 from rag_knowledge_system.hybrid import keyword_overlap_score
 from rag_knowledge_system.vector_store import (
     InMemoryVectorStore
