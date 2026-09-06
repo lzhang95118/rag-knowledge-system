@@ -4,6 +4,7 @@ from rag_knowledge_system.chunking import (
     chunk_document, 
     chunk_document_by_words, 
     chunk_document_by_tokens,
+    chunk_document_by_paragraphs,
 )
 
 
@@ -63,7 +64,7 @@ def test_chunk_size_must_be_positive():
         chunk_document(document,chunk_size=0)
 
 
-def test_ovelap_cannot_be_negative():
+def test_overlap_cannot_be_negative():
     document = Document(
         content="ABC",
         source="example.txt",
@@ -153,4 +154,27 @@ def test_chunk_document_by_tokens():
     assert chunks[2].content == "token4 token5"
     assert chunks[0].metadata["chunk_strategy"] == "token"
 
-    
+
+def test_chunk_document_by_paragraphs():
+    document = Document(
+        content="""
+Students must attend scheduled classes.
+
+The library opens at 8 am and closes at 10 pm.
+
+Attendance below the required threshold may trigger follow-up.
+""".strip(),
+        source="sample.txt",
+        file_type="txt",
+    )
+
+    chunks = chunk_document_by_paragraphs(
+        document=document,
+        max_words=100,
+    )
+
+    assert len(chunks) == 3
+
+    assert chunks[0].content == "Students must attend scheduled classes."
+    assert chunks[1].content == "The library opens at 8 am and closes at 10 pm."
+    assert chunks[2].content == "Attendance below the required threshold may trigger follow-up."

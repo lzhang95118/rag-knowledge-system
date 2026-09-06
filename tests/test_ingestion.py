@@ -6,7 +6,7 @@ def test_load_text_file(tmp_path):
     file_path = tmp_path / "example.txt"
     file_path.write_text("Hello RAG", encoding="utf-8")
 
-    document = load_text_file((file_path))
+    document = load_text_file(file_path)
 
     assert document.content == "Hello RAG"
     assert document.file_type == "txt"
@@ -28,7 +28,7 @@ def test_load_text_file_rejects_empty_file(tmp_path):
         load_text_file(file_path)
 
 
-def test_load_text_file_unspported_file_type(tmp_path):
+def test_load_text_file_unsupported_file_type(tmp_path):
     file_path = tmp_path / "example.csv"
     file_path.write_text("a,b,c", encoding="utf-8")
 
