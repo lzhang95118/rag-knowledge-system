@@ -6,6 +6,10 @@ from rag_knowledge_system.chunking import (
 )
 from rag_knowledge_system.embedding import HuggingFaceEmbedding
 from rag_knowledge_system.vector_store import InMemoryVectorStore
+from rag_knowledge_system.generation import (
+    GenerationResult,
+    GroundedGenerator,
+)
 
 
 def build_retriever_from_file(
@@ -74,3 +78,19 @@ def build_retriever_from_file_with_paragraphs(
     )
 
     return retriever
+
+def answer_question(
+    question: str,
+    retriever: Retriever,
+    generator: GroundedGenerator,
+    top_k: int = 3,
+) -> GenerationResult:
+    results = retriever.retrieve(
+        query=question,
+        top_k=top_k,
+    )
+
+    return generator.generate(
+        question=question,
+        results=results,
+    )

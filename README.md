@@ -14,7 +14,7 @@ The public repository is not intended to reproduce the private production enviro
 
 ## Status
 
-Core retrieval pipeline implemented.
+Core retrieval and source-grounded generation pipeline implemented.
 
 Current capabilities:
 
@@ -32,26 +32,8 @@ Current capabilities:
 - ground-truth retrieval evaluation
 - Hit Rate@K, Recall@K and Mean Reciprocal Rank (MRR)
 - runnable semantic retrieval benchmark
-
-## Project Goals
-
-## Implemented
-
-- document ingestion and parsing
-- metadata-aware chunking
-- embedding and vector retrieval
-- metadata filtering
-- hybrid retrieval
-- reranking
-- automated testing
-- retrieval evaluation with labelled benchmark cases
-
-## Roadmap
-
-- source-grounded generation
-- structured outputs
-- FastAPI deployment
-- Docker packaging
+- source-grounded answer generation
+- source provenance and citation tracking
 
 ## Architecture
 
@@ -62,10 +44,12 @@ flowchart LR
     C --> D[Embed]
     D --> E[Vector Store]
     E --> F[Semantic Retrieve]
-    F --> G[Metadata Filter]
-    G --> H[Hybrid Score]
-    H --> I[Rerank]
-    I --> J[Top-K Results]
+    F --> G[Hybrid Score]
+    G --> H[Rerank]
+    H --> I[Top-K Results]
+    I --> J[Build Grounded Context]
+    J --> K[Generate]
+    K --> L[Answer with Source Citations]
 ```
 
 ## Retrieval Evaluation
@@ -93,3 +77,30 @@ mrr: 1.000
 ```
 
 The benchmark is intentionally small and is intended to provide a reproducible baseline for comparing semantic, hybrid and reranked retrieval strategies.
+
+## Source-grounded Generation
+
+The generation layer turns retrieved chunks into grounded answers while preserving source provenance.
+
+The current implementation:
+
+- formats retrieved chunks into numbered source context
+- instructs the language model to answer only from retrieved evidence
+- requires citations using `[Source N]`
+- returns both the generated answer and its supporting sources
+- avoids calling the language model when no retrieval results are available
+- keeps the language model interface injectable for provider-independent testing
+
+Example flow:
+
+```
+Question
+  -> Retriever
+  -> SearchResult[]
+  -> Grounded Context
+  -> Prompt
+  -> LLM
+  -> GenerationResult
+     - answer
+     - sources
+```
