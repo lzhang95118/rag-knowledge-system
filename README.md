@@ -29,6 +29,9 @@ Current capabilities:
 - second-stage reranking
 - end-to-end retrieval pipeline
 - automated tests
+- ground-truth retrieval evaluation
+- Hit Rate@K, Recall@K and Mean Reciprocal Rank (MRR)
+- runnable semantic retrieval benchmark
 
 ## Project Goals
 
@@ -41,10 +44,10 @@ Current capabilities:
 - hybrid retrieval
 - reranking
 - automated testing
+- retrieval evaluation with labelled benchmark cases
 
 ## Roadmap
 
-- retrieval evaluation
 - source-grounded generation
 - structured outputs
 - FastAPI deployment
@@ -64,3 +67,29 @@ flowchart LR
     H --> I[Rerank]
     I --> J[Top-K Results]
 ```
+
+## Retrieval Evaluation
+
+The repository includes a small labelled retrieval benchmark using a synthetic corpus and manually defined ground-truth relevant chunks.
+
+Metrics:
+
+- Hit Rate@K
+- Recall@K
+- Mean Reciprocal Rank (MRR)
+
+Run the benchmark with:
+
+```powershell
+python .\eval\run_retrieval_eval.py
+```
+
+Current semantic retrieval baseline:
+
+```
+hit_rate@3: 1.000
+recall@3: 1.000
+mrr: 1.000
+```
+
+The benchmark is intentionally small and is intended to provide a reproducible baseline for comparing semantic, hybrid and reranked retrieval strategies.

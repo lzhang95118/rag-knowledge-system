@@ -1,0 +1,7 @@
+Retrieval-augmented generation combines information retrieval with language generation. A retriever first finds relevant passages from a knowledge base, which are then provided as context to a language model.
+
+Document chunking divides large documents into smaller pieces before embedding. Chunk overlap can preserve context across boundaries, while chunk size affects both retrieval precision and the amount of surrounding information retained.
+
+Embedding models convert text into numerical vectors. Semantically similar pieces of text should have vectors located closer together in the embedding space, allowing semantic search to retrieve content even when exact keywords differ.
+
+Reranking takes an initial set of retrieved candidates and scores them again using a stronger relevance model. Its goal is to move the most relevant passages toward the top of the final retrieval results.
