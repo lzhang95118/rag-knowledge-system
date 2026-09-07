@@ -55,24 +55,24 @@ def test_hit_at_k_returns_0_when_relevant_chunk_is_not_found():
 
     assert hit_at_k(relevant_chunks, relevant, k=3) == 0.0
 
-    def test_recall_at_k_returns_fraction_of_relevant_chunks_found():
-        retrieved = [
-            make_result("test.txt", 0),
-            make_result("test.txt", 2),
-            make_result("test.txt", 4),
-        ]
+def test_recall_at_k_returns_fraction_of_relevant_chunks_found():
+    retrieved = [
+        make_result("test.txt", 0),
+        make_result("test.txt", 2),
+        make_result("test.txt", 4),
+    ]
 
-        relevant = {
-            ("test.txt", 0),
-            ("test.txt", 1),
-            ("test.txt", 2),
-        }
+    relevant = {
+        ("test.txt", 0),
+        ("test.txt", 1),
+        ("test.txt", 2),
+    }
 
-        assert recall_at_k(
-            retrieved,
-            relevant,
-            k=3,
-        ) == 2 / 3
+    assert recall_at_k(
+        retrieved,
+        relevant,
+        k=3,
+    ) == 2 / 3
 
 def test_reciprocal_rank_returns_first_correct_value():
     relevant_chunks = [
