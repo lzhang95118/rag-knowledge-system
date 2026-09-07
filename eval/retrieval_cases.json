@@ -1,0 +1,38 @@
+[
+  {
+    "query": "Why is chunk overlap useful?",
+    "relevant_chunks": [
+      {
+        "filename": "eval_rag_basics.txt",
+        "chunk_index": 1
+      }
+    ]
+  },
+  {
+    "query": "How can semantic search work without exact keyword matches?",
+    "relevant_chunks": [
+      {
+        "filename": "eval_rag_basics.txt",
+        "chunk_index": 2
+      }
+    ]
+  },
+  {
+    "query": "What happens after the first retrieval stage to improve ranking?",
+    "relevant_chunks": [
+      {
+        "filename": "eval_rag_basics.txt",
+        "chunk_index": 3
+      }
+    ]
+  },
+  {
+    "query": "How does retrieval augmented generation provide context to a language model?",
+    "relevant_chunks": [
+      {
+        "filename": "eval_rag_basics.txt",
+        "chunk_index": 0
+      }
+    ]
+  }
+]
